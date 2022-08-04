@@ -22,21 +22,20 @@ import static java.lang.System.out;
 )
 public class LoginServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String user = req.getParameter("user");
-        String password = req.getParameter("password");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String user = request.getParameter("user");
+        String pwd = request.getParameter("pwd");
         String userID = getServletConfig().getInitParameter("user");
-        String pass = getServletConfig().getInitParameter("password");
-        if(userID.equals(user) && pass.equals(password)){
-            req.setAttribute("user",user);
-            out.println("Success");
-            req.getRequestDispatcher("Success.jsp").forward(req,resp);
+        String password = getServletConfig().getInitParameter("password");
+        if(userID.equals(user) && password.equals(pwd)){
+            request.setAttribute("user",user);
+            request.getRequestDispatcher("Success.jsp").forward(request,response);
         }
         else {
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/Login.html");
-            PrintWriter printWriter = resp.getWriter();
-            out.println("<h3>You have entered incorrect information...</h3>");
-            requestDispatcher.include(req,resp);
+            PrintWriter out = response.getWriter();
+            out.println("<font color=red>You have entered incorrect information...</font>");
+            requestDispatcher.include(request,response);
         }
     }
 }
